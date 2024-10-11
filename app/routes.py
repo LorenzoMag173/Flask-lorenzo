@@ -32,3 +32,43 @@ def cadastrarUsuario():
         return 'Cadastrado com sucesso'
     except Exception as e:
         return f'Cadastrado com erro\n\n {e}'
+
+    @app.route('/listar')
+    def listarTudo():
+        try:
+            requisicao = requests.get(f'{link}/cadastro/.json')  # solicito o dado
+            dicionario = requisicao.json()
+            return dicionario
+        except Exception as e:
+            return f'Algo deu errado \n {e}'
+
+    @app.route('/listarIndividual')
+    def listarIndividual():
+        try:
+            requisicao = requests.get(f'{link}/cadastro/.json')  # Solicitando
+            dicionario = requisicao.json()
+            idCadastro = ""  # Coletar o id
+            for codigo in dicionario:
+                chave = dicionario[codigo]['cpf']
+                if chave == '12345':
+                    idCadastro = codigo
+                    return idCadastro
+        except Exception as e:
+            return f'Algo deu errado \n {e}'
+
+    @app.route('/atualizar')
+    def atualizar():
+        try:
+            dados = {"nome": "joão"}
+            requisicao = requests.patch(f'{link}/cadastro/-O8miQL89AKNB52s1xU5/.json', data=json.dumps(dados))
+            return "Atualizado com sucesso!"
+        except Exception as e:
+            return f'Algo deu errado\n {e}'
+
+    @app.route('/excluir')
+    def excluir():
+        try:
+            requisicao = requests.delete(f'{link}/cadastro/-O8miQL89AKNB52s1xU5/.json')
+            return "Excluído com sucesso!"
+        except Exception as e:
+            return f'Algo deu errado\n {e}'
